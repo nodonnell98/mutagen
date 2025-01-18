@@ -13,4 +13,8 @@ class EntityTrait < ApplicationRecord
     modifiers = Modifier.where(target: self).sum(:modifier)
     update!(cached_value: total + modifiers)
   end
+
+  def name
+    trait.name
+  end
 end

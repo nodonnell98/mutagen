@@ -6,8 +6,9 @@ class CharactersController < ApplicationController
     @characters = Character.all
   end
 
-  # GET /characters/1 or /characters/1.json
+  # GET /characters/1
   def show
+    render :show, locals: { character: @character }
   end
 
   # GET /characters/new
@@ -19,7 +20,7 @@ class CharactersController < ApplicationController
   def edit
   end
 
-  # POST /characters or /characters.json
+  # POST /characters
   def create
     @character = Character.new(character_params)
 
