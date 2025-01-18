@@ -1,4 +1,4 @@
-# See https://git-scm.com/docs/gitattributes for more about git attribute files.
+# See https://git-scm.com/docs/gittraits for more about git trait files.
 
 # Mark the database schema as having been generated.
 db/schema.rb linguist-generated
