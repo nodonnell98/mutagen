@@ -11,6 +11,6 @@ class Character < ApplicationRecord
   validates :level, presence: true, numericality: { only_integer: true, greater_than: 0 }
 
   def traits
-    entity_traits
+    entity_traits.includes(:trait).order('traits.display_order ASC').reload
   end
 end

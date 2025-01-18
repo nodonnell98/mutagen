@@ -8,12 +8,6 @@ class EntityTrait < ApplicationRecord
   belongs_to :entity, polymorphic: true
   belongs_to :trait
 
-  def update_cached_value
-    total = base_value
-    modifiers = Modifier.where(target: self).sum(:modifier)
-    update!(cached_value: total + modifiers)
-  end
-
   def name
     trait.name
   end

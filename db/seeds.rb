@@ -18,12 +18,14 @@ character = Character.find_or_create_by!(
 )
 
 puts 'Creating traits...'
-traits = ["Strength", "Constitution", "Discipline", "Intelligence", "Sense", "Will"].map do |trait_name|
-  Trait.find_or_create_by!(name: trait_name, code: trait_name.downcase)
+traits = ["Strength", "Constitution", "Discipline", "Intelligence", "Sense", "Will"].map.with_index do |trait_name, index|
+  Trait.find_or_create_by!(name: trait_name, code: trait_name.downcase) do |trait|
+    trait.display_order = index
+  end
 end
 
 puts 'Creating entity traits...'
-traits.each do |trait|
+traits.each_with_index do |trait|
   EntityTrait.find_or_create_by!(
     entity: character,
     trait: trait,

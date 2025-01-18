@@ -62,6 +62,7 @@ class CharactersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_character
       @character = Character.find(params[:id])
+      CharacterModifierService.new(@character).call
     end
 
     # Only allow a list of trusted parameters through.

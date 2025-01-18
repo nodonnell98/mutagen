@@ -29,7 +29,32 @@
     </div>
   </turbo-frame>
 
-  <turbo-frame id="gear_list_<%= dom_id(character) %>">
+  <turbo-frame id="gear_list">
+    <div>
+      <h1>Gear</h1>
+      <ul>
+        <% character.gear.each do |gear| %>
+          <li>
+            <div class="flex">
+              <%= gear.name %>
+              <%= 
+                button_to "Destroy", 
+                entity_resource_path(
+                  entity_id: character.id, 
+                  entity_type: "Character",
+                  resource_id: gear.id,
+                  resource_type: "Gear"
+                ), 
+                method: :delete, 
+                data: { 
+                  turbo_frame: "gear_list"
+                } 
+              %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </turbo-frame>
 
   <div>
