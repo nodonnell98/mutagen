@@ -18,14 +18,13 @@
   </div>
 
   <turbo-frame id="traits_<%= dom_id(@character) %>">
-    <div>
-      <h1>Traits</h1>
-      <ul>
-        <% character.traits.each do |trait| %>
-          <li><%= trait.name %></li>
-          <li><%= trait.cached_value %>
-        <% end %>
-      </ul>
+    <div class="flex space-x-5 w-full">
+      <% character.traits.each do |trait| %>
+        <div class="flex flex-col p-3 m-3 border border-gray-200 rounded-md items-center w-1/6">
+          <p><%= trait.name %></p>
+          <p><%= trait.cached_value %></p>
+        </div>
+      <% end %>
     </div>
   </turbo-frame>
 
@@ -47,6 +46,7 @@
                 ), 
                 method: :delete, 
                 data: { 
+                  turbo_action: "replace",
                   turbo_frame: "gear_list"
                 } 
               %>
