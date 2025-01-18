@@ -54,6 +54,25 @@ Modifier.find_or_create_by!(
   modifier: 5
 )
 
+puts 'Creating a gear...'
+boots = Gear.find_or_create_by!(
+  name: 'Boots',
+  description: 'A piece of armour'
+)
+
+puts 'Creating an entity resource...'
+EntityResource.find_or_create_by!(
+  entity: character,
+  resource: boots
+)
+
+puts 'Creating a modifier for the kevlar that increases the strength of a character...'
+Modifier.find_or_create_by!(
+  target: Trait.find_by(name: 'Discipline'),
+  source: boots,
+  modifier: 5
+)
+
 puts 'Creating a sword...'
 sword = Weapon.find_or_create_by!(
   name: 'Sword',

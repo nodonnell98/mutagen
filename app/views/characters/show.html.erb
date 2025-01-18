@@ -1,59 +1,50 @@
-<p style="color: green"><%= notice %></p>
+<div class="flex flex-col">
+  <h1 class="text-red-100">Character</h1>
+  <div id="<%= dom_id @character %>">
+    <p>
+      <strong>Name:</strong>
+      <%= character.name %>
+    </p>
 
-<h1>Character</h1>
-<div id="<%= dom_id @character %>">
-  <p>
-    <strong>Name:</strong>
-    <%= character.name %>
-  </p>
+    <p>
+      <strong>Description:</strong>
+      <%= character.description %>
+    </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= character.description %>
-  </p>
+    <p>
+      <strong>Level:</strong>
+      <%= character.level %>
+    </p>
+  </div>
 
-  <p>
-    <strong>Level:</strong>
-    <%= character.level %>
-  </p>
-</div>
+  <turbo-frame id="traits_<%= dom_id(@character) %>">
+    <div>
+      <h1>Traits</h1>
+      <ul>
+        <% character.traits.each do |trait| %>
+          <li><%= trait.name %></li>
+          <li><%= trait.cached_value %>
+        <% end %>
+      </ul>
+    </div>
+  </turbo-frame>
 
-<div>
-  <h1>Traits</h1>
-  <ul>
-    <% character.traits.each do |trait| %>
-      <li><%= trait.name %></li>
-      <li><%= trait.cached_value %>
-    <% end %>
-  </ul>
-</div>
+  <turbo-frame id="gear_list_<%= dom_id(character) %>">
+  </turbo-frame>
 
-<div>
-  <h1>Gear</h1>
-  <ul>
-    <% character.gear.each do |gear| %>
-      <li>
-        <div>
-          <%= gear.name %>
-            <%= button_to "Destroy", entity_resource_path(entity: character, resource: gear), method: :delete %>
-        </div>
-      </li>
-    <% end %>
-  </ul>
-</div>
+  <div>
+    <h1>Weapons</h1>
+    <ul>
+      <% character.weapons.each do |weapon| %>
+        <li><%= weapon.name %></li>
+      <% end %>
+    </ul>
+  </div>
 
-<div>
-  <h1>Weapons</h1>
-  <ul>
-    <% character.weapons.each do |weapon| %>
-      <li><%= weapon.name %></li>
-    <% end %>
-  </ul>
-</div>
+  <div>
+    <%= link_to "Edit this character", edit_character_path(character) %> |
+    <%= link_to "Back to characters", characters_path %>
 
-<div>
-  <%= link_to "Edit this character", edit_character_path(character) %> |
-  <%= link_to "Back to characters", characters_path %>
-
-  <%= button_to "Destroy this character", @character, method: :delete %>
+    <%= button_to "Destroy this character", @character, method: :delete %>
+  </div>
 </div>
