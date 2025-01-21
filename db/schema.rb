@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_18_201722) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_21_191845) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_18_201722) do
     t.integer "level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "current_health"
   end
 
   create_table "entity_resources", force: :cascade do |t|
@@ -86,7 +87,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_18_201722) do
     t.integer "quality"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "trait_id"
+    t.index ["trait_id"], name: "index_weapons_on_trait_id"
   end
 
   add_foreign_key "entity_traits", "traits"
+  add_foreign_key "weapons", "traits"
 end

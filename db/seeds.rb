@@ -18,8 +18,9 @@ character = Character.find_or_create_by!(
 )
 
 puts 'Creating traits...'
+trait_codes = ["STR", "CON", "DSC", "INT", "SNS", "WLL"]
 traits = ["Strength", "Constitution", "Discipline", "Intelligence", "Sense", "Will"].map.with_index do |trait_name, index|
-  Trait.find_or_create_by!(name: trait_name, code: trait_name.downcase) do |trait|
+  Trait.find_or_create_by!(name: trait_name, code: trait_codes[index]) do |trait|
     trait.display_order = index
   end
 end
@@ -29,7 +30,7 @@ traits.each_with_index do |trait|
   EntityTrait.find_or_create_by!(
     entity: character,
     trait: trait,
-    base_value: 20,
+    base_value: 30,
     cached_value: 20
   )
 end
@@ -40,7 +41,7 @@ character.entity_traits.first.update(core_trait: true)
 puts 'Creating a gear...'
 kevlar = Gear.find_or_create_by!(
   name: 'Kevlar Vest',
-  description: 'A piece of armour'
+  description: 'A piece of armour that grants +20 STR'
 )
 
 puts 'Creating an entity resource...'
@@ -53,7 +54,7 @@ puts 'Creating a modifier for the kevlar that increases the strength of a charac
 Modifier.find_or_create_by!(
   target: Trait.find_by(name: 'Strength'),
   source: kevlar,
-  modifier: 5
+  modifier: 20
 )
 
 puts 'Creating a gear...'
@@ -83,7 +84,8 @@ sword = Weapon.find_or_create_by!(
   damage_dice_qty: 1,
   ammo: 0,
   range: 1,
-  quality: 0
+  quality: 0,
+  trait: Trait.find_by(name: 'Strength')
 )
 
 puts 'Creating an entity resource...'
@@ -107,7 +109,8 @@ sniper = Weapon.find_or_create_by!(
   damage_dice_qty: 1,
   ammo: 5,
   range: 50,
-  quality: 1
+  quality: 1,
+  trait: Trait.find_by(name: 'Sense')
 )
 
 puts 'Creating an entity resource...'
@@ -117,4 +120,3 @@ EntityResource.find_or_create_by!(
 )
 
 puts 'seed complete'
-

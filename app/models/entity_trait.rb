@@ -11,4 +11,16 @@ class EntityTrait < ApplicationRecord
   def name
     trait.name
   end
+
+  def modifier
+    (cached_value / 10) - 2
+  end
+
+  def crit_success
+    (cached_value / 4).floor
+  end
+
+  def crit_fail
+    (cached_value * 2)
+  end
 end

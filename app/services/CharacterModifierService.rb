@@ -31,7 +31,7 @@ class CharacterModifierService
     EntityTrait.transaction do
       updates.each do |update|
         target_trait = target_traits[update[:trait]]
-        target_trait.update!(cached_value: target_trait.cached_value + update[:modifier]) if target_trait
+        target_trait.update!(cached_value: update[:modifier] + target_trait&.cached_value)
       end
     end
   end
