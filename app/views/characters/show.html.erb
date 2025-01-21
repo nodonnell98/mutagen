@@ -1,6 +1,6 @@
-<div class="flex flex-col">
-  <h1 class="text-red-100">Character</h1>
-  <div id="<%= dom_id @character %>">
+<turbo-frame id="character-sheet" class="flex flex-col">
+  <h1 class="text-xl">Character</h1>
+  <div id="character" class="flex p-3 m-3 border border-gray-200 rounded-md space-x-4">
     <p>
       <strong>Name:</strong>
       <%= character.name %>
@@ -17,7 +17,7 @@
     </p>
   </div>
 
-  <turbo-frame id="traits_<%= dom_id(@character) %>">
+  <turbo-frame id="traits">
     <div class="flex space-x-5 w-full">
       <% character.traits.each do |trait| %>
         <div class="flex flex-col p-3 m-3 border border-gray-200 rounded-md items-center w-1/6">
@@ -28,22 +28,67 @@
     </div>
   </turbo-frame>
 
+  <turbo-frame id="weapon_list">
+    <div class="flex flex-col p-3 m-3 border border-gray-200 bg-gray-100 rounded-md space-y-2 shadow-md">
+      <div class="flex mb-2">
+        <h1>Weapons</h1>
+        <span class="grow"></span>
+        <%= link_to "Add Weapon", 
+          character_path(character), 
+          class: "bg-gray-300 text-white rounded-sm shadow-sm p-1" 
+        %>
+      </div>
+        <% character.weapons.each do |weapon| %>
+          <div class="flex flex-col border rounded-md px-3 py-2 bg-gray-200 shadow-md">
+            <div class=" flex space-x-2 items-center">
+              <p class="font-bold"><%= weapon.name %></p>
+              <p>Damage: <%= weapon.damage_dice_qty %>d<%= weapon.damage_dice %></p>
+              <p>Range: <%= weapon.range %></p>
+              <p>Ammo: <%= weapon.ammo %></p>
+              <p>Quality: <%= weapon.quality %></p>
+              <p class="grow"></p>
+              <p>
+                <%= 
+                  button_to "X", 
+                  entity_resource_path(
+                    entity_id: character.id, 
+                    entity_type: "Character",
+                    resource_id: weapon.id,
+                    resource_type: "Weapon"
+                  ),
+                  class: "m-3 text-red-500", 
+                  method: :delete, 
+                  data: { 
+                    turbo_action: "replace",
+                    turbo_frame: "weapon_list"
+                  } 
+                %>
+              </p>
+            </div>
+            <p class="text-sm text-gray-700 mt-1"><%= weapon.description%></p>
+          </div>
+        <% end %>
+    </div>
+  </turbo-frame>
+
   <turbo-frame id="gear_list">
-    <div>
+    <div class="flex flex-col p-3 m-3 border border-gray-200 rounded-md">
       <h1>Gear</h1>
       <ul>
         <% character.gear.each do |gear| %>
-          <li>
-            <div class="flex">
-              <%= gear.name %>
+          <li class="border-b border-gray-200">
+            <div class="flex items-center">
+              <p class="m-3"><%= gear.name %></p>
+              <span class="grow"></span>
               <%= 
-                button_to "Destroy", 
+                button_to "X", 
                 entity_resource_path(
                   entity_id: character.id, 
                   entity_type: "Character",
                   resource_id: gear.id,
                   resource_type: "Gear"
-                ), 
+                ),
+                class: "m-3 text-red-500", 
                 method: :delete, 
                 data: { 
                   turbo_action: "replace",
@@ -58,18 +103,9 @@
   </turbo-frame>
 
   <div>
-    <h1>Weapons</h1>
-    <ul>
-      <% character.weapons.each do |weapon| %>
-        <li><%= weapon.name %></li>
-      <% end %>
-    </ul>
-  </div>
-
-  <div>
     <%= link_to "Edit this character", edit_character_path(character) %> |
     <%= link_to "Back to characters", characters_path %>
 
     <%= button_to "Destroy this character", @character, method: :delete %>
   </div>
-</div>
+</turbo-frame>

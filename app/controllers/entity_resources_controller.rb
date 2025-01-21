@@ -2,16 +2,9 @@
 
 # app/controllers/entity_resources_controller.rb
 class EntityResourcesController < ApplicationController
+  # after_actiom
+
   def destroy
-    entity_type = params[:entity_type]
-    entity_id = params[:entity_id]
-    resource_type = params[:resource_type]
-    resource_id = params[:resource_id]
-
-    # Dynamically find the entity and resource based on their types and IDs
-    entity = entity_type.constantize.find(entity_id)
-    resource = resource_type.constantize.find(resource_id)
-
     entity_resource = EntityResource.find_by(entity: entity, resource: resource)
 
     if entity_resource
@@ -19,7 +12,7 @@ class EntityResourcesController < ApplicationController
 
       respond_to do |format|
         format.turbo_stream do
-          render partial: 'characters/gear_list', locals: { character: entity }
+          render partial: "characters/#{params[:resource_type].downcase}_list", locals: { character: entity }
         end
         format.html { redirect_to polymorphic_path(entity), notice: 'Gear removed successfully.' }
       end
@@ -32,5 +25,20 @@ class EntityResourcesController < ApplicationController
       end
     end
   end
-end
 
+  private
+
+  def entity
+    entity_type = params[:entity_type]
+    entity_id = params[:entity_id]
+
+    entity_type.constantize.find(entity_id)
+  end
+
+  def resource
+    resource_type = params[:resource_type]
+    resource_id = params[:resource_id]
+
+    resource_type.constantize.find(resource_id)
+  end
+end

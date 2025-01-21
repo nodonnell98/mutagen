@@ -1,0 +1,44 @@
+<turbo-stream action="replace" target="weapon_list">
+  <template>
+    <div class="flex flex-col p-3 m-3 border border-gray-200 bg-gray-100 rounded-md space-y-2 shadow-md">
+      <div class="flex mb-2">
+        <h1>Weapons</h1>
+        <span class="grow"></span>
+        <%= link_to "Add Weapon", 
+          character_path(character), 
+          class: "bg-gray-300 text-white rounded-sm shadow-sm p-1" 
+        %>
+      </div>
+        <% character.weapons.each do |weapon| %>
+          <div class="flex flex-col border rounded-md px-3 py-2 bg-gray-200 shadow-md">
+            <div class=" flex space-x-2 items-center">
+              <p class="font-bold"><%= weapon.name %></p>
+              <p>Damage: <%= weapon.damage_dice_qty %>d<%= weapon.damage_dice %></p>
+              <p>Range: <%= weapon.range %></p>
+              <p>Ammo: <%= weapon.ammo %></p>
+              <p>Quality: <%= weapon.quality %></p>
+              <p class="grow"></p>
+              <p>
+                <%= 
+                  button_to "X", 
+                  entity_resource_path(
+                    entity_id: character.id, 
+                    entity_type: "Character",
+                    resource_id: weapon.id,
+                    resource_type: "Weapon"
+                  ),
+                  class: "m-3 text-red-500", 
+                  method: :delete, 
+                  data: { 
+                    turbo_action: "replace",
+                    turbo_frame: "weapon_list"
+                  } 
+                %>
+              </p>
+            </div>
+            <p class="text-sm text-gray-700 mt-1"><%= weapon.description%></p>
+          </div>
+        <% end %>
+    </div>
+  </template>
+</turbo-stream>

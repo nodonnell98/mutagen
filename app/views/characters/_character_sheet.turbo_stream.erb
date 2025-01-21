@@ -1,0 +1,77 @@
+<turbo-stream action="replace" class="flex flex-col" target="character-sheet">
+  <template>
+    <h1 class="text-red-100">Character</h1>
+    <div id="character">
+      <p>
+        <strong>Name:</strong>
+        <%= character.name %>
+      </p>
+
+      <p>
+        <strong>Description:</strong>
+        <%= character.description %>
+      </p>
+
+      <p>
+        <strong>Level:</strong>
+        <%= character.level %>
+      </p>
+    </div>
+
+    <turbo-frame id="traits">
+      <div class="flex space-x-5 w-full">
+        <% character.traits.each do |trait| %>
+          <div class="flex flex-col p-3 m-3 border border-gray-200 rounded-md items-center w-1/6">
+            <p><%= trait.name %></p>
+            <p><%= trait.cached_value %></p>
+          </div>
+        <% end %>
+      </div>
+    </turbo-frame>
+
+    <turbo-frame id="gear_list">
+      <div>
+        <h1>Gear</h1>
+        <ul>
+          <% character.gear.each do |gear| %>
+            <li>
+              <div class="flex">
+                <%= gear.name %>
+                <%= 
+                  button_to "Destroy", 
+                  entity_resource_path(
+                    entity_id: character.id, 
+                    entity_type: "Character",
+                    resource_id: gear.id,
+                    resource_type: "Gear"
+                  ), 
+                  method: :delete, 
+                  data: { 
+                    turbo_action: "replace",
+                    turbo_frame: "gear_list"
+                  } 
+                %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </turbo-frame>
+
+    <div>
+      <h1>Weapons</h1>
+      <ul>
+        <% character.weapons.each do |weapon| %>
+          <li><%= weapon.name %></li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div>
+      <%= link_to "Edit this character", edit_character_path(character) %> |
+      <%= link_to "Back to characters", characters_path %>
+
+      <%= button_to "Destroy this character", @character, method: :delete %>
+    </div>
+  </template>
+</div>

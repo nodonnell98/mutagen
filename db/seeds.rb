@@ -78,7 +78,12 @@ Modifier.find_or_create_by!(
 puts 'Creating a sword...'
 sword = Weapon.find_or_create_by!(
   name: 'Sword',
-  description: 'A sharp piece of metal'
+  description: 'A sharp piece of metal that steels your resolve',
+  damage_dice: 6,
+  damage_dice_qty: 1,
+  ammo: 0,
+  range: 1,
+  quality: 0
 )
 
 puts 'Creating an entity resource...'
@@ -92,6 +97,23 @@ Modifier.find_or_create_by!(
   target: Trait.find_by(name: 'Will'),
   source: sword,
   modifier: 5
+)
+
+puts 'Creating a gun...'
+sniper = Weapon.find_or_create_by!(
+  name: 'Sniper Rifle',
+  description: 'A heavy duty sniper rifle',
+  damage_dice: 12,
+  damage_dice_qty: 1,
+  ammo: 5,
+  range: 50,
+  quality: 1
+)
+
+puts 'Creating an entity resource...'
+EntityResource.find_or_create_by!(
+  entity: character,
+  resource: sniper
 )
 
 puts 'seed complete'
