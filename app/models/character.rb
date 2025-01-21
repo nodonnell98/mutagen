@@ -13,4 +13,22 @@ class Character < ApplicationRecord
   def traits
     entity_traits.includes(:trait).order('traits.display_order ASC').reload
   end
+
+  def health
+    constitution_trait = entity_traits.joins(:trait).find_by(traits: { name: 'Constitution' })
+    constitution_trait ? (constitution_trait.modifier * 3) + 5 : 0
+  end
+
+  def threat_power
+    level + main_trait.modifier + 3
+  end
+
+  def main_trait
+    entity_traits.joins(:trait).find_by(traits: { name: 'Sense' })
+  end
+
+  def weapon_trait_modifier(weapon)
+    entity_trait = traits.find_by(traits: { name: weapon.trait.name })
+    entity_trait ? entity_trait.modifier : 0
+  end
 end
