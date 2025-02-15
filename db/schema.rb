@@ -65,8 +65,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_21_191845) do
     t.integer "modifier"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["source_type", "source_id"], name: "index_entity_modifiers_on_source"
-    t.index ["target_type", "target_id"], name: "index_entity_modifiers_on_target"
+    t.index ["source_type", "source_id"], name: "index_modifiers_on_source"
+    t.index ["target_type", "target_id"], name: "index_modifiers_on_target"
   end
 
   create_table "traits", force: :cascade do |t|

@@ -12,21 +12,6 @@ class CharacterModifierService
   def modify_character
     reset_traits
 
-    # Collect all the relevant entity traits for the character
-    target_traits = EntityTrait.where(entity: character, trait: character.entity_resources.flat_map { |er| er.resource.modifiers.map(&:target) }).index_by(&:trait)
-
-    # Collect all the necessary updates
-    updates = []
-
-    character.entity_resources.each do |entity_resource|
-      entity_resource.resource.modifiers.each do |modifier|
-        target_trait = target_traits[modifier.target]
-        if target_trait
-          updates << { trait: modifier.target, modifier: modifier.modifier, current_value: target_trait.cached_value }
-        end
-      end
-    end
-
     # Perform all updates in a batch operation
     EntityTrait.transaction do
       updates.each do |update|
@@ -43,4 +28,23 @@ class CharacterModifierService
       entity_trait.update!(cached_value: entity_trait.base_value)
     end
   end
+end
+
+def updates
+  updates_arr = []
+
+  character.entity_resources.each do |entity_resource|
+    entity_resource.resource.modifiers.each do |modifier|
+      target_trait = target_traits[modifier.target]
+      if target_trait
+        updates_arr << { trait: modifier.target, modifier: modifier.modifier, current_value: target_trait.cached_value }
+      end
+    end
+  end
+
+  updates_arr
+end
+
+def target_traits
+  @target_traits ||= EntityTrait.where(entity: character, trait: character.entity_resources.flat_map { |er| er.resource.modifiers.map(&:target) }).index_by(&:trait)
 end
